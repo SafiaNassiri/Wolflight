@@ -1,102 +1,260 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed = 6f;
-    public float jumpForce = 12f;
-    public int maxJumps = 1; // 1 = single jump; set 2 for double-jump
-    public float coyoteTime = 0.1f;
-    public float jumpBufferTime = 0.1f;
+    public float moveSpeed = 8f;
+    [Tooltip("Time to reach target speed on ground (lower = snappier)")]
+    public float groundAccelerationTime = 0.05f;
+    [Tooltip("Time to reach target speed in air (higher = floatier)")]
+    public float airAccelerationTime = 0.12f;
 
-    [Header("Ground Check")]
+    [Header("Jump")]
+    public float jumpVelocity = 14f;
+    public int maxJumps = 1;
+    public float coyoteTime = 0.12f;
+    public float jumpBufferTime = 0.12f;
+    public float maxJumpHoldTime = 0.18f;
+
+    [Header("Gravity & Fall")]
+    public float normalGravityScale = 1f;
+    public float lowJumpMultiplier = 2.2f;
+    public float fallMultiplier = 2.2f;
+    public float fastFallMultiplier = 1.4f;
+
+    [Header("Wall")]
+    public LayerMask wallLayer;
+    public Transform wallCheck;
+    public float wallCheckDistance = 0.1f;
+    public float wallSlideSpeedMax = 2.5f;
+    public float wallStickDuration = 0.18f;
+    public Vector2 wallJumpVelocity = new Vector2(10f, 14f);
+
+    [Header("Ground")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.12f;
     public LayerMask groundLayer;
 
-    Rigidbody2D rb;
-    float horizontal;
-    bool facingRight = true;
-    int jumpsLeft;
-    float lastGroundedTime;
-    float lastJumpPressedTime;
-
     [Header("Animation")]
     public Animator animator;
+
+    // runtime
+    Rigidbody2D rb;
+    float horizontalInput;
+    bool facingRight = true;
+    private bool hasReachedApex = false;
+
+    // jump state
+    int jumpsLeft;
+    [HideInInspector] public float lastGroundedTime = -999f;
+    [HideInInspector] public float lastJumpPressedTime = -999f;
+    [SerializeField] private float landingHoldTime = 0.2f; // duration for frames 6-7
+    private float landingTimer = 0f;
+    float jumpHoldTimer = 0f;
+    bool wasGroundedLastFrame = false;
+
+    // smoothing
+    float velocityXSmoothing;
+    float currentSpeed; // smoothed speed for animation
+
+    // wall state
+    bool isTouchingWall;
+    int wallDirection; // -1 left, 1 right
+    bool isWallSliding;
+    float wallStickTimer;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = normalGravityScale;
     }
 
     void Start()
     {
         jumpsLeft = maxJumps;
+        wallStickTimer = wallStickDuration;
     }
 
     void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        HandleInput();
+        DetectGroundAndWall();
+        HandleJumpBuffer();
+        HandleWallSlide();
+        UpdateAnimator(currentSpeed);
+        FlipIfNeeded();
+    }
 
-        // Input buffering
-        if (Input.GetButtonDown("Jump"))
-            lastJumpPressedTime = Time.time;
+    void FixedUpdate()
+    {
+        HandleMovement();
+        ApplyGravityModifiers();
+    }
 
+    void HandleInput()
+    {
+        horizontalInput = 0f;
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.aKey.isPressed) horizontalInput = -1f;
+            if (Keyboard.current.dKey.isPressed) horizontalInput = 1f;
+
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+                lastJumpPressedTime = Time.time;
+
+            if (Keyboard.current.spaceKey.isPressed && Time.time - lastJumpPressedTime <= 0.02f)
+                jumpHoldTimer = maxJumpHoldTime;
+        }
+    }
+
+    void DetectGroundAndWall()
+    {
         bool isGrounded = IsGrounded();
         if (isGrounded)
         {
             lastGroundedTime = Time.time;
             jumpsLeft = maxJumps;
         }
+        wasGroundedLastFrame = isGrounded;
 
-        // Jump conditions: coyote time or extra jumps
-        if (Time.time - lastJumpPressedTime <= jumpBufferTime)
+        isTouchingWall = false;
+        wallDirection = 0;
+        if (wallCheck != null)
         {
-            if (Time.time - lastGroundedTime <= coyoteTime || jumpsLeft > 0)
+            RaycastHit2D hitLeft = Physics2D.Raycast(wallCheck.position, Vector2.left, wallCheckDistance, wallLayer);
+            RaycastHit2D hitRight = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, wallLayer);
+            if (hitLeft.collider != null) { isTouchingWall = true; wallDirection = -1; }
+            else if (hitRight.collider != null) { isTouchingWall = true; wallDirection = 1; }
+        }
+    }
+
+    void HandleJumpBuffer()
+    {
+        bool coyoteActive = (Time.time - lastGroundedTime) <= coyoteTime;
+        bool jumpBuffered = (Time.time - lastJumpPressedTime) <= jumpBufferTime;
+
+        if (jumpBuffered)
+        {
+            if (coyoteActive || jumpsLeft > 0 || isTouchingWall)
             {
-                DoJump();
+                PerformJump(isWallJumpAttempt: isTouchingWall && !IsGrounded());
                 lastJumpPressedTime = -999f;
             }
         }
+    }
 
-        // Flip sprite
-        if (horizontal > 0.1f && !facingRight) Flip();
-        else if (horizontal < -0.1f && facingRight) Flip();
-
-        // ✨ Update animation parameters
-        if (animator)
+    void HandleWallSlide()
+    {
+        isWallSliding = false;
+        if (isTouchingWall && !IsGrounded() && horizontalInput == wallDirection)
         {
-            animator.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
-            animator.SetBool("IsGrounded", isGrounded);
-            animator.SetFloat("VerticalVelocity", rb.linearVelocity.y);
+            if (wallStickTimer > 0f)
+            {
+                isWallSliding = true;
+                wallStickTimer -= Time.deltaTime;
+                if (rb.linearVelocity.y < -wallSlideSpeedMax)
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeedMax);
+            }
         }
+        else wallStickTimer = wallStickDuration;
     }
 
-    void FixedUpdate()
+    void HandleMovement()
     {
-        rb.linearVelocity = new Vector2(horizontal * moveSpeed, rb.linearVelocity.y);
+        float targetVelX = horizontalInput * moveSpeed;
+        float accelTime = IsGrounded() ? groundAccelerationTime : airAccelerationTime;
+        float vx = Mathf.SmoothDamp(rb.linearVelocity.x, targetVelX, ref velocityXSmoothing, accelTime);
+        rb.linearVelocity = new Vector2(vx, rb.linearVelocity.y);
+
+        currentSpeed = Mathf.Abs(vx);
     }
 
-    void DoJump()
+    void PerformJump(bool isWallJumpAttempt = false)
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); // reset Y velocity for consistent jumps
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        if (isWallJumpAttempt)
+        {
+            int dir = wallDirection != 0 ? wallDirection : (facingRight ? 1 : -1);
+            float jumpDirX = -dir * Mathf.Abs(wallJumpVelocity.x);
+            rb.linearVelocity = new Vector2(jumpDirX, wallJumpVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
+        }
+
+        jumpHoldTimer = maxJumpHoldTime;
         jumpsLeft = Mathf.Max(0, jumpsLeft - 1);
+    }
+
+    void ApplyGravityModifiers()
+    {
+        bool holdingJump = Keyboard.current != null && Keyboard.current.spaceKey.isPressed;
+        bool pressingDown = Keyboard.current != null &&
+                            (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed);
+
+        if (rb.linearVelocity.y < 0f)
+        {
+            float multiplier = fallMultiplier * (pressingDown ? fastFallMultiplier : 1f);
+            rb.gravityScale = normalGravityScale * multiplier;
+        }
+        else if (rb.linearVelocity.y > 0f)
+        {
+            rb.gravityScale = holdingJump && jumpHoldTimer > 0f ? normalGravityScale : normalGravityScale * lowJumpMultiplier;
+            if (holdingJump) jumpHoldTimer -= Time.fixedDeltaTime;
+        }
+        else rb.gravityScale = normalGravityScale;
+    }
+
+    void UpdateAnimator(float horizontalVelocity)
+    {
+        bool isGrounded = IsGrounded();
+        float verticalVelocity = rb.linearVelocity.y;
+
+        // Jumping (including wall jump)
+        animator.SetBool("IsJumping", !isGrounded && verticalVelocity > 0.1f);
+
+        // Falling
+        animator.SetBool("IsFalling", !isGrounded && verticalVelocity < -0.1f);
+
+        // Speed and ground
+        animator.SetFloat("Speed", Mathf.Abs(horizontalVelocity));
+        animator.SetBool("IsGrounded", isGrounded);
     }
 
     bool IsGrounded()
     {
         if (groundCheck == null) return false;
-        Collider2D col = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        return col != null;
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer) != null;
+    }
+
+    void FlipIfNeeded()
+    {
+        if (horizontalInput > 0.1f && !facingRight) Flip();
+        else if (horizontalInput < -0.1f && facingRight) Flip();
     }
 
     void Flip()
     {
         facingRight = !facingRight;
         Vector3 s = transform.localScale;
-        s.x *= -1;
+        s.x *= -1f;
         transform.localScale = s;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+        if (wallCheck != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(wallCheck.position, wallCheck.position + Vector3.left * wallCheckDistance);
+            Gizmos.DrawLine(wallCheck.position, wallCheck.position + Vector3.right * wallCheckDistance);
+        }
     }
 }
