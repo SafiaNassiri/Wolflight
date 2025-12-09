@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Ground")]
     public Transform groundCheck;
-    public float groundCheckRadius = 0.12f;
+    public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
 
     [Header("Animation")]
@@ -44,24 +44,23 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     float horizontalInput;
     bool facingRight = true;
-    private bool hasReachedApex = false;
 
     // jump state
     int jumpsLeft;
     [HideInInspector] public float lastGroundedTime = -999f;
     [HideInInspector] public float lastJumpPressedTime = -999f;
-    [SerializeField] private float landingHoldTime = 0.2f; // duration for frames 6-7
+    [SerializeField] private float landingHoldTime = 0.2f;
     private float landingTimer = 0f;
     float jumpHoldTimer = 0f;
     bool wasGroundedLastFrame = false;
 
     // smoothing
     float velocityXSmoothing;
-    float currentSpeed; // smoothed speed for animation
+    float currentSpeed;
 
     // wall state
     bool isTouchingWall;
-    int wallDirection; // -1 left, 1 right
+    int wallDirection;
     bool isWallSliding;
     float wallStickTimer;
 
@@ -212,15 +211,24 @@ public class PlayerController : MonoBehaviour
         bool isGrounded = IsGrounded();
         float verticalVelocity = rb.linearVelocity.y;
 
-        // Jumping (including wall jump)
-        animator.SetBool("IsJumping", !isGrounded && verticalVelocity > 0.1f);
-
-        // Falling
-        animator.SetBool("IsFalling", !isGrounded && verticalVelocity < -0.1f);
-
-        // Speed and ground
-        animator.SetFloat("Speed", Mathf.Abs(horizontalVelocity));
+        // CRITICAL: Set IsGrounded FIRST and always force reset air states when grounded
         animator.SetBool("IsGrounded", isGrounded);
+
+        if (isGrounded)
+        {
+            // FORCE all air states to false when on ground
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsFalling", false);
+        }
+        else
+        {
+            // Only set air states when actually in the air
+            animator.SetBool("IsJumping", verticalVelocity > 0.1f);
+            animator.SetBool("IsFalling", verticalVelocity < -0.1f);
+        }
+
+        // Speed for run/idle transition
+        animator.SetFloat("Speed", Mathf.Abs(horizontalVelocity));
     }
 
     bool IsGrounded()
