@@ -40,6 +40,11 @@ public class PlayerController : MonoBehaviour
     [Header("Animation")]
     public Animator animator;
 
+    [Header("Interaction")]
+    public float interactRange = 1f;
+    public LayerMask interactableLayer;
+    private IInteractable currentInteractable;
+
     // runtime
     Rigidbody2D rb;
     float horizontalInput;
@@ -84,6 +89,9 @@ public class PlayerController : MonoBehaviour
         HandleWallSlide();
         UpdateAnimator(currentSpeed);
         FlipIfNeeded();
+
+        CheckForInteractable();        // ← NEW
+        HandleInteractInput();         // ← NEW
     }
 
     void FixedUpdate()
@@ -168,6 +176,17 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(vx, rb.linearVelocity.y);
 
         currentSpeed = Mathf.Abs(vx);
+    }
+
+    void HandleInteractInput()
+    {
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            if (currentInteractable != null)
+            {
+                currentInteractable.Interact();
+            }
+        }
     }
 
     void PerformJump(bool isWallJumpAttempt = false)
@@ -263,6 +282,21 @@ public class PlayerController : MonoBehaviour
             Gizmos.color = Color.cyan;
             Gizmos.DrawLine(wallCheck.position, wallCheck.position + Vector3.left * wallCheckDistance);
             Gizmos.DrawLine(wallCheck.position, wallCheck.position + Vector3.right * wallCheckDistance);
+        }
+    }
+
+    void CheckForInteractable()
+    {
+        // Use an OverlapCircle to detect interactables
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, interactRange, interactableLayer);
+
+        if (hit != null)
+        {
+            currentInteractable = hit.GetComponent<IInteractable>();
+        }
+        else
+        {
+            currentInteractable = null;
         }
     }
 }
