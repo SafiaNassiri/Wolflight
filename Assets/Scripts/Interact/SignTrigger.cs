@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class SignTrigger : MonoBehaviour
 {
-    [Header("UI Panel")]
-    [Tooltip("The panel that will show when player enters the trigger")]
     public GameObject signPanel;
-
-    [Header("Settings")]
-    [Tooltip("Fade in/out duration")]
     public float fadeDuration = 0.2f;
-
-    [Tooltip("Optional: Play sound when showing panel")]
     public AudioClip showSound;
 
     private CanvasGroup canvasGroup;
@@ -20,17 +13,14 @@ public class SignTrigger : MonoBehaviour
 
     void Start()
     {
-        // Make sure the panel starts hidden
         if (signPanel != null)
         {
-            // Add CanvasGroup for smooth fading
             canvasGroup = signPanel.GetComponent<CanvasGroup>();
             if (canvasGroup == null)
             {
                 canvasGroup = signPanel.AddComponent<CanvasGroup>();
             }
 
-            // Start invisible
             canvasGroup.alpha = 0f;
             currentAlpha = 0f;
             signPanel.SetActive(false);
@@ -40,7 +30,6 @@ public class SignTrigger : MonoBehaviour
             Debug.LogError("SignTrigger: Sign Panel is not assigned!", this);
         }
 
-        // Setup audio if sound is provided
         if (showSound != null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -51,7 +40,6 @@ public class SignTrigger : MonoBehaviour
 
     void Update()
     {
-        // Smooth fade in/out
         if (signPanel != null && canvasGroup != null)
         {
             float targetAlpha = isPlayerInside ? 1f : 0f;
@@ -61,7 +49,6 @@ public class SignTrigger : MonoBehaviour
                 currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, Time.deltaTime / fadeDuration * 10f);
                 canvasGroup.alpha = currentAlpha;
 
-                // Deactivate panel when fully faded out
                 if (currentAlpha < 0.01f && !isPlayerInside)
                 {
                     signPanel.SetActive(false);
@@ -72,7 +59,6 @@ public class SignTrigger : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the player entered the trigger
         if (other.CompareTag("Player"))
         {
             isPlayerInside = true;
@@ -81,7 +67,6 @@ public class SignTrigger : MonoBehaviour
             {
                 signPanel.SetActive(true);
 
-                // Play sound if assigned
                 if (audioSource != null && showSound != null)
                 {
                     audioSource.Play();
@@ -92,14 +77,12 @@ public class SignTrigger : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        // Check if the player left the trigger
         if (other.CompareTag("Player"))
         {
             isPlayerInside = false;
         }
     }
 
-    // Draw the trigger area in the editor
     void OnDrawGizmos()
     {
         Gizmos.color = new Color(0f, 1f, 0f, 0.3f);

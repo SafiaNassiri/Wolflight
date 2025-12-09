@@ -42,7 +42,7 @@ public class AutoScrollBackground : MonoBehaviour
     void Update()
     {
         // DEBUG
-        Debug.Log($"Scrolling: Speed={scrollSpeedX}, Pos={transform.position.x:F2}, UseMaterial={useMaterialScroll}");
+        //Debug.Log($"Scrolling: Speed={scrollSpeedX}, Pos={transform.position.x:F2}, UseMaterial={useMaterialScroll}");
 
         if (useMaterialScroll)
         {

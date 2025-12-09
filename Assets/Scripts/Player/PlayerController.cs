@@ -4,27 +4,21 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
     public float moveSpeed = 8f;
-    [Tooltip("Time to reach target speed on ground (lower = snappier)")]
     public float groundAccelerationTime = 0.05f;
-    [Tooltip("Time to reach target speed in air (higher = floatier)")]
     public float airAccelerationTime = 0.12f;
 
-    [Header("Jump")]
     public float jumpVelocity = 14f;
     public int maxJumps = 1;
     public float coyoteTime = 0.12f;
     public float jumpBufferTime = 0.12f;
     public float maxJumpHoldTime = 0.18f;
 
-    [Header("Gravity & Fall")]
     public float normalGravityScale = 1f;
     public float lowJumpMultiplier = 2.2f;
     public float fallMultiplier = 2.2f;
     public float fastFallMultiplier = 1.4f;
 
-    [Header("Wall")]
     public LayerMask wallLayer;
     public Transform wallCheck;
     public float wallCheckDistance = 0.1f;
@@ -32,25 +26,20 @@ public class PlayerController : MonoBehaviour
     public float wallStickDuration = 0.18f;
     public Vector2 wallJumpVelocity = new Vector2(10f, 14f);
 
-    [Header("Ground")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
 
-    [Header("Animation")]
     public Animator animator;
 
-    [Header("Interaction")]
     public float interactRange = 1f;
     public LayerMask interactableLayer;
     private IInteractable currentInteractable;
 
-    // runtime
     Rigidbody2D rb;
     float horizontalInput;
     bool facingRight = true;
 
-    // jump state
     int jumpsLeft;
     [HideInInspector] public float lastGroundedTime = -999f;
     [HideInInspector] public float lastJumpPressedTime = -999f;
@@ -59,11 +48,9 @@ public class PlayerController : MonoBehaviour
     float jumpHoldTimer = 0f;
     bool wasGroundedLastFrame = false;
 
-    // smoothing
     float velocityXSmoothing;
     float currentSpeed;
 
-    // wall state
     bool isTouchingWall;
     int wallDirection;
     bool isWallSliding;
@@ -90,8 +77,8 @@ public class PlayerController : MonoBehaviour
         UpdateAnimator(currentSpeed);
         FlipIfNeeded();
 
-        CheckForInteractable();        // ← NEW
-        HandleInteractInput();         // ← NEW
+        CheckForInteractable();
+        HandleInteractInput();
     }
 
     void FixedUpdate()
@@ -230,23 +217,19 @@ public class PlayerController : MonoBehaviour
         bool isGrounded = IsGrounded();
         float verticalVelocity = rb.linearVelocity.y;
 
-        // CRITICAL: Set IsGrounded FIRST and always force reset air states when grounded
         animator.SetBool("IsGrounded", isGrounded);
 
         if (isGrounded)
         {
-            // FORCE all air states to false when on ground
             animator.SetBool("IsJumping", false);
             animator.SetBool("IsFalling", false);
         }
         else
         {
-            // Only set air states when actually in the air
             animator.SetBool("IsJumping", verticalVelocity > 0.1f);
             animator.SetBool("IsFalling", verticalVelocity < -0.1f);
         }
 
-        // Speed for run/idle transition
         animator.SetFloat("Speed", Mathf.Abs(horizontalVelocity));
     }
 
@@ -287,7 +270,6 @@ public class PlayerController : MonoBehaviour
 
     void CheckForInteractable()
     {
-        // Use an OverlapCircle to detect interactables
         Collider2D hit = Physics2D.OverlapCircle(transform.position, interactRange, interactableLayer);
 
         if (hit != null)

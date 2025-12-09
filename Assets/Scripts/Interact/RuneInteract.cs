@@ -5,7 +5,7 @@ public class Rune : MonoBehaviour, IInteractable
     public static int runesCollected = 0;
     public static int totalRunesNeeded = 14;
 
-    public GlowOrbPulse glowPulse;  // assign in inspector
+    public GlowOrbPulse glowPulse;
     private bool collected = false;
 
     public void Interact()
@@ -21,7 +21,7 @@ public class Rune : MonoBehaviour, IInteractable
 
         Debug.Log($"Rune collected! Total: {runesCollected}/{totalRunesNeeded}");
 
-        // destroy rune after collecting
+        // destroy rune light after collecting
         Destroy(gameObject);
     }
 }

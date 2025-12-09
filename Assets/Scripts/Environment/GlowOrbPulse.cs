@@ -2,19 +2,13 @@
 
 public class GlowOrbPulse : MonoBehaviour
 {
-    [Header("Pulse Settings")]
     public float pulseSpeed = 2f;
 
-    // Updated to match your desired scale range (4 -> 5)
     public float minScale = 4f;
     public float maxScale = 5f;
-
-    [Header("Glow Settings")]
     public bool pulseBrightness = true;
     public float minBrightness = 0.7f;
     public float maxBrightness = 1.5f;
-
-    [Header("Rotation")]
     public bool rotate = false;
     public float rotationSpeed = 30f;
 
@@ -22,7 +16,7 @@ public class GlowOrbPulse : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
-    private bool isPulsing = true;   // Allows stopping the pulse
+    private bool isPulsing = true;
 
     void Start()
     {
@@ -54,14 +48,14 @@ public class GlowOrbPulse : MonoBehaviour
             spriteRenderer.color = newColor;
         }
 
-        // Rotation (optional)
+        // Rotation
         if (rotate)
         {
             transform.Rotate(0f, 0f, rotationSpeed * Time.deltaTime);
         }
     }
 
-    // Call this when the player interacts with the rune
+    // Called when the player interacts with the rune
     public void StopPulse()
     {
         isPulsing = false;
