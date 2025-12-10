@@ -2099,7 +2099,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &91465958
 GameObject:
   m_ObjectHideFlags: 0
@@ -5588,7 +5591,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &349681261
 GameObject:
   m_ObjectHideFlags: 0
@@ -6403,7 +6409,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &433814514
 GameObject:
   m_ObjectHideFlags: 0
@@ -6607,7 +6616,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: idk
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &448973457
 GameObject:
   m_ObjectHideFlags: 0
@@ -6829,6 +6841,8 @@ Transform:
   m_Children:
   - {fileID: 2114862344}
   - {fileID: 1314985837}
+  - {fileID: 1250130795}
+  - {fileID: 2007289204}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
@@ -7479,7 +7493,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &577754362
 GameObject:
   m_ObjectHideFlags: 0
@@ -83527,8 +83544,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0811, y: 13.3907}
-  m_SizeDelta: {x: 224.1252, y: 52.7704}
+  m_AnchoredPosition: {x: 40.67602, y: 0.000048637}
+  m_SizeDelta: {x: 123.4758, y: 52.7704}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &615165086
 MonoBehaviour:
@@ -83550,7 +83567,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 0/14
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 438d97ec4e42fba4fa96d661c762195b, type: 2}
   m_sharedMaterial: {fileID: 2920859959972008402, guid: 438d97ec4e42fba4fa96d661c762195b, type: 2}
@@ -88167,8 +88184,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000021458, y: -1.8374}
-  m_SizeDelta: {x: 1040.7361, y: 87.8525}
+  m_AnchoredPosition: {x: 12.7101, y: 4.2151}
+  m_SizeDelta: {x: 1049.2095, y: 99.9575}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &707819315
 MonoBehaviour:
@@ -89122,7 +89139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &807012209
 GameObject:
   m_ObjectHideFlags: 0
@@ -89679,7 +89699,7 @@ GameObject:
   - component: {fileID: 882273811}
   - component: {fileID: 882273810}
   m_Layer: 5
-  m_Name: RuneCounter
+  m_Name: RunePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89698,12 +89718,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 615165085}
+  - {fileID: 1053797344}
   m_Father: {fileID: 1852565544}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -128.66736, y: -42.859863}
-  m_SizeDelta: {x: 257.3349, y: 85.7199}
+  m_AnchoredPosition: {x: -131.36865, y: -56.573486}
+  m_SizeDelta: {x: 246.0999, y: 93.5165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &882273810
 MonoBehaviour:
@@ -89725,7 +89746,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7793870071697752223, guid: 455a81b42bccfc347befd39f5027dcac, type: 3}
+  m_Sprite: {fileID: 3546469167490301977, guid: 94f06a0f76008d843af43b9c95b6868e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -89835,7 +89856,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &884697704
 GameObject:
   m_ObjectHideFlags: 0
@@ -91918,6 +91942,81 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1053797343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1053797344}
+  - component: {fileID: 1053797346}
+  - component: {fileID: 1053797345}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1053797344
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053797343}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 882273809}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -58.3, y: 0.00001812}
+  m_SizeDelta: {x: 50, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1053797345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053797343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -1828925992, guid: cd2a9974ba910db46a6693ccbde880b4, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1053797346
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053797343}
+  m_CullTransparentMesh: 1
 --- !u!1 &1062393805
 GameObject:
   m_ObjectHideFlags: 0
@@ -92974,7 +93073,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &1158441595
 GameObject:
   m_ObjectHideFlags: 0
@@ -94476,6 +94578,55 @@ MonoBehaviour:
   maxBrightness: 1.5
   rotate: 0
   rotationSpeed: 30
+--- !u!1 &1250130794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1250130795}
+  - component: {fileID: 1250130796}
+  m_Layer: 0
+  m_Name: RuneCounterUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1250130795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250130794}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1083.4099, y: 563.7423, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 519309012}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1250130796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250130794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ca0e2c25fc78d41a76af6c3b8722d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RuneCounterUI
+  runeCountText: {fileID: 615165086}
+  runeIcon: {fileID: 1053797343}
+  animateOnCollect: 1
+  punchScale: 1.3
+  animDuration: 0.3
 --- !u!1 &1253607371
 GameObject:
   m_ObjectHideFlags: 0
@@ -94830,10 +94981,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
   dialoguePanel: {fileID: 1670770768}
   dialogueText: {fileID: 707819315}
-  runeCounterText: {fileID: 615165086}
   typeSpeed: 0.05
-  continueKey: 101
-  skipKey: 32
+  displayDuration: 3
 --- !u!1 &1315210690
 GameObject:
   m_ObjectHideFlags: 0
@@ -95165,7 +95314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &1367560916
 GameObject:
   m_ObjectHideFlags: 0
@@ -95471,7 +95623,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &1410002568
 GameObject:
   m_ObjectHideFlags: 0
@@ -97144,7 +97299,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &1551066126
 GameObject:
   m_ObjectHideFlags: 0
@@ -97574,7 +97732,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &1605909003
 GameObject:
   m_ObjectHideFlags: 0
@@ -98598,7 +98759,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8025854753733828743, guid: 017f9648455d59e41b1c544f5aacbcb0, type: 3}
+  m_Sprite: {fileID: -8813226016143968884, guid: 849bfda4b35747846aa3ca3a3097cefc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -98920,7 +99081,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &1729700244
 GameObject:
   m_ObjectHideFlags: 0
@@ -102181,7 +102345,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
+  runeNumber: 1
+  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
+  collectSound: {fileID: 0}
 --- !u!1 &1948874797
 GameObject:
   m_ObjectHideFlags: 0
@@ -102927,6 +103094,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2007289203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2007289204}
+  m_Layer: 0
+  m_Name: RuneCounterManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2007289204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007289203}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 519309012}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2009302745
 GameObject:
   m_ObjectHideFlags: 0

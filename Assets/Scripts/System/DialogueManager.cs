@@ -6,12 +6,13 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
+    [Header("UI References")]
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
 
+    [Header("Settings")]
     public float typeSpeed = 0.05f;
     public float displayDuration = 3f;
-    public KeyCode skipKey = KeyCode.Space;
 
     private bool isDialogueActive = false;
     private bool isTyping = false;
@@ -40,7 +41,10 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isDialogueActive) return;
 
-        if (Input.GetKeyDown(skipKey) && isTyping)
+        // Skip typing animation using new Input System
+        if (UnityEngine.InputSystem.Keyboard.current != null &&
+            UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame &&
+            isTyping)
         {
             SkipTypewriter();
         }
