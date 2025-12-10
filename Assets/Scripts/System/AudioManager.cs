@@ -4,17 +4,14 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
-    [Header("Audio Sources")]
     public AudioSource musicSource;
     public AudioSource sfxSource;
-
-    [Header("Default Clips")]
     public AudioClip menuMusic;
     public AudioClip gameMusic;
 
     private void Awake()
     {
-        // Singleton pattern - only one AudioManager exists
+        // Make sure only one AudioManager exists
         if (Instance == null)
         {
             Instance = this;

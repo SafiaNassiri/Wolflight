@@ -32,7 +32,7 @@ public class DeathPit : MonoBehaviour
                 Instantiate(deathAnimationPrefab, deathPosition, Quaternion.identity);
             }
 
-            // Hide the player immediately
+            // Hide the player
             other.gameObject.SetActive(false);
 
             // Wait for animation to finish, then load scene

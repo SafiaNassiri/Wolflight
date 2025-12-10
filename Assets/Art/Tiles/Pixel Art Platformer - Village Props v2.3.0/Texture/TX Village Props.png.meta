@@ -2510,10 +2510,10 @@ TextureImporter:
       name: TX Village Props_87
       rect:
         serializedVersion: 2
-        x: 256
-        y: 832
-        width: 32
-        height: 32
+        x: 272
+        y: 839
+        width: 22
+        height: 28
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2797,7 +2797,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 736
-        y: 832
+        y: 843
         width: 32
         height: 32
       alignment: 0
@@ -3038,10 +3038,10 @@ TextureImporter:
       name: TX Village Props_111
       rect:
         serializedVersion: 2
-        x: 256
-        y: 800
-        width: 32
-        height: 32
+        x: 258
+        y: 826
+        width: 16
+        height: 55
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
