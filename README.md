@@ -187,13 +187,13 @@ Assets/
 - [ ] Change game font
 - [ ] Pause menu
 - [ ] Fix text size for different aspect ratios
-- [ ] Add W for jump and arrow key movement
+- [ ] Add arrow key movement
 - [ ] Controller support
 - [ ] Add controls panel to see controls (maybe in the PauseMenu)
 - [ ] Mapping system in PauseMenu or mapped to a button
 - [ ] Cover the sprite gaps
 - [ ] Death screen tracks rune scorrectly
-- [ ] Add S to be player looks down
+- [ ] Add S and W to be player looks down and up
 
 ---
 
