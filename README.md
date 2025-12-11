@@ -70,7 +70,7 @@ Your choice determines her fate—and yours.
 - **Scene Management**: Seamless transitions between menu, gameplay, death, and endings
 
 ### Project Structure
-
+```
 Assets/
 ├── _Scenes/         # All game scenes
 ├── Scripts/
@@ -86,7 +86,7 @@ Assets/
 │   └── SFX/         # Sound effects
 ├── Prefabs/         # Reusable game objects
 └── Tilemaps/        # Level design tiles
-
+```
 ---
 
 ## Gameplay Features Deep Dive
