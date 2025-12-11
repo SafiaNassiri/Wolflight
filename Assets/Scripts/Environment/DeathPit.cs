@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class DeathPit : MonoBehaviour
 {
@@ -28,8 +27,14 @@ public class DeathPit : MonoBehaviour
             // Hide player
             other.gameObject.SetActive(false);
 
+            // Store the collected rune count before resetting
+            int collectedRunesBeforeDeath = Rune.runesCollected;
+
             // Reset rune counter
             Rune.runesCollected = 0;
+
+            // Save the collected runes to be displayed on the Game Over screen
+            PlayerPrefs.SetInt("LastCollectedRunes", collectedRunesBeforeDeath);
 
             // Reload after delay
             Invoke(nameof(LoadNextScene), deathDelay);

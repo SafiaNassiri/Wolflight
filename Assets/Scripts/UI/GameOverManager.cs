@@ -1,8 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
-
-// Handles the Game Over screen: displays rune count, shows messages,and provides options to retry, return to main menu, or quit.
 
 public class GameOverManager : MonoBehaviour
 {
@@ -13,9 +11,10 @@ public class GameOverManager : MonoBehaviour
     void Start()
     {
         // Update the rune count display
+        int collectedRunesBeforeDeath = PlayerPrefs.GetInt("LastCollectedRunes", 0);
         if (runeCountText != null)
         {
-            runeCountText.text = $"Runes Collected: {Rune.runesCollected}/{Rune.totalRunesNeeded}";
+            runeCountText.text = $"Runes Collected: {collectedRunesBeforeDeath}/{Rune.totalRunesNeeded}";
         }
 
         // Optionally customize the game over text
