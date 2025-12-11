@@ -1,41 +1,34 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class DeathPit : MonoBehaviour
 {
     public float deathDelay = 1.0f;
-    public string gameOverSceneName = "";
-    public AudioClip deathSound;
+    public string gameOverSceneName = "GameOver";
     public GameObject deathAnimationPrefab;
 
     private bool isDying = false;
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if it's the player
         if (other.CompareTag("Player") && !isDying)
         {
             isDying = true;
-
-            // Store player position
             Vector3 deathPosition = other.transform.position;
 
             // Play death sound
-            if (deathSound != null)
-            {
-                AudioSource.PlayClipAtPoint(deathSound, deathPosition);
-            }
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayDeathSound();
 
-            // Spawn death animation at player position
+            // Spawn death animation
             if (deathAnimationPrefab != null)
-            {
                 Instantiate(deathAnimationPrefab, deathPosition, Quaternion.identity);
-            }
 
-            // Hide the player
+            // Hide player
             other.gameObject.SetActive(false);
 
-            // Wait for animation to finish, then load scene
+            // Reload after delay
             Invoke(nameof(LoadNextScene), deathDelay);
         }
     }
@@ -44,13 +37,11 @@ public class DeathPit : MonoBehaviour
     {
         if (string.IsNullOrEmpty(gameOverSceneName))
         {
-            // Reload current scene
             Scene currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.name);
         }
         else
         {
-            // Load game over scene
             SceneManager.LoadScene(gameOverSceneName);
         }
     }

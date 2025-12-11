@@ -5,18 +5,9 @@ public class Rune : MonoBehaviour, IInteractable
     public static int runesCollected = 0;
     public static int totalRunesNeeded = 14;
 
-    [Header("Rune Settings")]
-    public int runeNumber = 1;
-
-    [Header("Lore Text")]
+    public GlowOrbPulse glowPulse;
     [TextArea(3, 10)]
     public string loreText = "Ancient power flows through this rune...";
-
-    [Header("References")]
-    public GlowOrbPulse glowPulse;
-
-    [Header("Optional Audio")]
-    public AudioClip collectSound;
 
     private bool collected = false;
 
@@ -27,33 +18,22 @@ public class Rune : MonoBehaviour, IInteractable
         collected = true;
         runesCollected++;
 
-        // Play collect sound
-        if (collectSound != null && AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlaySFX(collectSound);
-        }
+        // Play rune collect sound
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayRuneSFX();
 
-        // Show dialogue with lore
+        // Show dialogue
         if (DialogueManager.Instance != null)
-        {
             DialogueManager.Instance.ShowDialogue(loreText);
-        }
 
-        // Stop glow pulse
+        // Hide glow
         if (glowPulse != null)
         {
             glowPulse.enabled = false;
-        }
-
-        Debug.Log($"Rune collected! Total: {runesCollected}/{totalRunesNeeded}");
-
-        // Hide the glow (which is the child)
-        if (glowPulse != null)
-        {
             glowPulse.gameObject.SetActive(false);
         }
 
-        // Destroy after a short delay (give time for dialogue to appear)
+        Debug.Log($"Rune collected! Total: {runesCollected}/{totalRunesNeeded}");
         Destroy(gameObject, 0.5f);
     }
 }

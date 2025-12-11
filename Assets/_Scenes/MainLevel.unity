@@ -2099,10 +2099,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: You hold all fourteen. Her essence pulses in your hands. The shrine awaits.
+    Will you restore what was lost?
 --- !u!1 &91465958
 GameObject:
   m_ObjectHideFlags: 0
@@ -5591,10 +5590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: Can you hear it? A voice beneath the wind. "Please... remember me..."
 --- !u!1 &349681261
 GameObject:
   m_ObjectHideFlags: 0
@@ -6409,10 +6406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: They called her... the name slips away like water. The world forgets
+    its saviors too easily.
 --- !u!1 &433814514
 GameObject:
   m_ObjectHideFlags: 0
@@ -6616,10 +6612,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: idk
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: One rune remains. One last piece of her soul. Will you see this through
+    to the end?
 --- !u!1 &448973457
 GameObject:
   m_ObjectHideFlags: 0
@@ -6806,7 +6801,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 519309012}
-  - component: {fileID: 519309011}
   m_Layer: 0
   m_Name: === Managers ===
   m_TagString: Untagged
@@ -6814,18 +6808,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &519309011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519309010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7677c2c48cb57084c8bf2c40c0167463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
 --- !u!4 &519309012
 Transform:
   m_ObjectHideFlags: 0
@@ -7493,10 +7475,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: With each passing moment, more of her essence disperses. The shrine grows
+    colder. Time is fleeting.
 --- !u!1 &577754362
 GameObject:
   m_ObjectHideFlags: 0
@@ -83815,14 +83796,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  animator: {fileID: 649436291}
   interactRange: 1
   interactableLayer:
     serializedVersion: 2
     m_Bits: 1024
-  lastGroundedTime: -999
-  lastJumpPressedTime: -999
-  landingHoldTime: 0.2
+  animator: {fileID: 649436291}
+  runningLoopSound: {fileID: 8300000, guid: 34116f6a241944f46b9868f6c29fe03f, type: 3}
 --- !u!1 &671172585
 GameObject:
   m_ObjectHideFlags: 0
@@ -88779,6 +88758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce0a43d9bdb4cb47b8a121807a0593f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shrine
+  goodEndingScene: GoodEnding
+  badEndingScene: BadEnding
 --- !u!1 &747570127
 GameObject:
   m_ObjectHideFlags: 0
@@ -89139,10 +89120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: Before the silence, there was laughter. Before the stone, there was warmth.
+    Do you remember?
 --- !u!1 &807012209
 GameObject:
   m_ObjectHideFlags: 0
@@ -89856,10 +89836,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: Will you complete what she began? Or let her fade into myth, another
+    forgotten hero?
 --- !u!1 &884697704
 GameObject:
   m_ObjectHideFlags: 0
@@ -90313,7 +90292,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeathPit
   deathDelay: 1
   gameOverSceneName: 
-  deathSound: {fileID: 0}
   deathAnimationPrefab: {fileID: 6374439457103211456, guid: 09f201ec83648a14ea59945b8398cc38, type: 3}
 --- !u!1 &940911264
 GameObject:
@@ -93073,10 +93051,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: She wasn't just a guardian. She was a mirror. A reflection of what you
+    could become.
 --- !u!1 &1158441595
 GameObject:
   m_ObjectHideFlags: 0
@@ -95314,10 +95291,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: She vowed to watch over this realm, to keep the balance. But every vow
+    demands a price.
 --- !u!1 &1367560916
 GameObject:
   m_ObjectHideFlags: 0
@@ -95623,10 +95599,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: Fourteen fragments of a shattered soul. Fourteen runes holding pieces
+    of who she was.
 --- !u!1 &1410002568
 GameObject:
   m_ObjectHideFlags: 0
@@ -97299,10 +97274,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: "The runes don't just hold power\u2014they hold HER. Her thoughts, her
+    dreams, her final words."
 --- !u!1 &1551066126
 GameObject:
   m_ObjectHideFlags: 0
@@ -97732,10 +97706,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: Each rune you collect pulls you deeper. Her memories become yours. Her
+    sorrow, your burden.
 --- !u!1 &1605909003
 GameObject:
   m_ObjectHideFlags: 0
@@ -99081,10 +99054,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: When the darkness came, she stood alone. One soul against the void. One
+    sacrifice to save thousands.
 --- !u!1 &1729700244
 GameObject:
   m_ObjectHideFlags: 0
@@ -102345,10 +102317,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f14d5b9335d74295fc93b346b655b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rune
-  runeNumber: 1
-  loreText: Ancient power flows through this rune...
   glowPulse: {fileID: 1190736651}
-  collectSound: {fileID: 0}
+  loreText: Stone by stone, breath by breath, she gave herself to the shrine. Her
+    essence scattered like starlight.
 --- !u!1 &1948874797
 GameObject:
   m_ObjectHideFlags: 0
@@ -104356,6 +104327,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49f9ef0c3f023e4d8526b389e8729de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneManager
+  storyText: {fileID: 0}
+  continuePrompt: {fileID: 0}
+  storySegments: []
+  typeSpeed: 0.03
+  segmentDelay: 2
+  nextSceneName: MainMenu
 --- !u!4 &2114862344
 Transform:
   m_ObjectHideFlags: 0
