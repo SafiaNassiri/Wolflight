@@ -70,23 +70,22 @@ Your choice determines her fate—and yours.
 - **Scene Management**: Seamless transitions between menu, gameplay, death, and endings
 
 ### Project Structure
-` bash
+
 Assets/
-├── _Scenes/ # All game scenes
+├── _Scenes/         # All game scenes
 ├── Scripts/
-│ ├── Player/ # PlayerController
-│ ├── Camera/ # CameraFollow with bounds
-│ ├── Environment/ # DeathPit, Rune, Shrine, Signs
-│ ├── UI/ # Menu managers, dialogue system
-│ ├── Managers/ # AudioManager, singleton systems
-│ └── Animations/ # Animation controllers
-├── Sprites/ # All visual assets
+│   ├── Player/      # PlayerController
+│   ├── Camera/      # CameraFollow with bounds
+│   ├── Environment/ # DeathPit, Rune, Shrine, Signs
+│   ├── UI/          # Menu managers, dialogue system
+│   ├── Managers/    # AudioManager, singleton systems
+│   └── Animations/  # Animation controllers
+├── Sprites/         # All visual assets
 ├── Audio/
-│ ├── Music/ # Background tracks
-│ └── SFX/ # Sound effects
-├── Prefabs/ # Reusable game objects
-└── Tilemaps/ # Level design tiles
-`
+│   ├── Music/       # Background tracks
+│   └── SFX/         # Sound effects
+├── Prefabs/         # Reusable game objects
+└── Tilemaps/        # Level design tiles
 
 ---
 
@@ -193,6 +192,7 @@ Assets/
 - [ ] Add controls panel to see controls (maybe in the PauseMenu)
 - [ ] Mapping system in PauseMenu or mapped to a button
 - [ ] Cover the sprite gaps
+- [ ] Death screen tracks rune scorrectly
 
 ---
 
