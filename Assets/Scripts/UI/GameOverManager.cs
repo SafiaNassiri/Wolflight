@@ -30,11 +30,11 @@ public class GameOverManager : MonoBehaviour
     {
         PlayButtonSound();
 
-        // Reset rune counter for new attempt
+        // Reset rune counter
         Rune.runesCollected = 0;
 
         // Load main level
-        SceneManager.LoadScene("MainLevel");
+        SceneManager.LoadScene(SceneIndex.MAIN_LEVEL);
     }
 
     public void ReturnToMainMenu()
@@ -45,7 +45,7 @@ public class GameOverManager : MonoBehaviour
         Rune.runesCollected = 0;
 
         // Load main menu
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(SceneIndex.MAIN_MENU);
     }
 
     public void QuitGame()

@@ -1194,31 +1194,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndingCutsceneManager
   storyText: {fileID: 776484105}
   continuePrompt: {fileID: 1597352730}
-  storySegments:
-  - You stand before the shrine, incomplete. The statue stares down at you with empty,
-    stone eyes. Something feels... wrong.
-  - The runes you carry pulse weakly, not enough to bridge the gap between stone
-    and soul. The shrine remains cold.
-  - You hear it then ... a whisper so faint you almost miss it. 'Why... did you stop...?
-  - The fragments of memory you collected swirl in confusion, incomplete thoughts
-    and broken promises. You see glimpses of who she was, but the picture remains
-    fractured.
-  - She sacrificed everything. Gave her very essence to save a world that would forget
-    her. And now... even you have left her incomplete.
-  - The statue begins to crack, not with light, but with decay. Stone flakes away
-    like ash. Her form erodes, the last traces of her existence crumbling.
-  - '"I waited... so long..." the whisper fades. The shrine goes dark. The warmth
-    you felt before is gone, replaced by an empty chill.'
-  - You tried. You found some of her. But 'some' was never enough. A soul cannot
-    exist in pieces. A memory cannot live half-remembered.
-  - "The realm will endure \u2014 her sacrifice saw to that. But she will fade into
-    myth, then into nothing. Another nameless hero. Another forgotten savior."
-  - As you walk away from the crumbling shrine, you can't shake the feeling that
-    you've lost something irreplaceable. Something that can never be found again.
-    The weight of incompletion will haunt you forever.
+  segments: []
   typeSpeed: 0.03
   segmentDelay: 1
-  nextSceneName: MainMenu
+  musicForThisCutscene: {fileID: 8300000, guid: c126ec652b84e3d4ca0a2bf6c51f3b86, type: 3}
+  stopMusicOnFinish: 1
+  nextSceneIndex: 0
 --- !u!4 &1885196200
 Transform:
   m_ObjectHideFlags: 0

@@ -629,7 +629,7 @@ MonoBehaviour:
   segmentDelay: 1
   musicForThisCutscene: {fileID: 8300000, guid: c126ec652b84e3d4ca0a2bf6c51f3b86, type: 3}
   stopMusicOnFinish: 1
-  nextSceneName: MainMenu
+  nextSceneIndex: 0
 --- !u!1 &1002469189
 GameObject:
   m_ObjectHideFlags: 0

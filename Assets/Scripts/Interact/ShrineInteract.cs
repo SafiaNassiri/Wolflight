@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 public class Shrine : MonoBehaviour, IInteractable
 {
     [Header("Ending Scenes")]
-    public string goodEndingScene = "GoodEnding";
-    public string badEndingScene = "BadEnding";
+    public int goodEndingIndex = SceneIndex.GOOD_ENDING;
+    public int badEndingIndex = SceneIndex.BAD_ENDING;
 
     public void Interact()
     {
@@ -19,12 +19,12 @@ public class Shrine : MonoBehaviour, IInteractable
         if (allRunesCollected)
         {
             Debug.Log("Loading Good Ending...");
-            SceneManager.LoadScene(goodEndingScene);
+            SceneManager.LoadScene(goodEndingIndex);
         }
         else
         {
             Debug.Log($"Loading Bad Ending... (Only {Rune.runesCollected}/{Rune.totalRunesNeeded} runes collected)");
-            SceneManager.LoadScene(badEndingScene);
+            SceneManager.LoadScene(badEndingIndex);
         }
     }
 }

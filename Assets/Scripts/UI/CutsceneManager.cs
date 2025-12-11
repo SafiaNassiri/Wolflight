@@ -7,7 +7,7 @@ public class CutsceneManager : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI storyText;
-    public GameObject continuePrompt;          // "Press SPACE to continue"
+    public GameObject continuePrompt;
 
     [Header("Story")]
     [TextArea(5, 15)]
@@ -18,11 +18,11 @@ public class CutsceneManager : MonoBehaviour
     public float segmentDelay = 2f;
 
     [Header("Audio")]
-    public AudioClip musicForThisCutscene;     // drag openingCutsceneMusic here
+    public AudioClip musicForThisCutscene;
     public bool stopMusicOnFinish = true;
 
-    [Header("Progression")]
-    public string nextSceneName = "MainLevel"; // whatever comes after this cutscene
+    [Header("Progression (Set scene index here)")]
+    public int nextSceneIndex = SceneIndex.MAIN_LEVEL;
 
     private int currentSegment = 0;
     private bool isTyping;
@@ -34,7 +34,6 @@ public class CutsceneManager : MonoBehaviour
     {
         if (continuePrompt) continuePrompt.SetActive(false);
 
-        // fire music
         if (musicForThisCutscene && AudioManager.Instance)
             AudioManager.Instance.PlayMusic(musicForThisCutscene);
 
@@ -43,12 +42,15 @@ public class CutsceneManager : MonoBehaviour
 
     void Update()
     {
-        if (!canContinue || UnityEngine.InputSystem.Keyboard.current == null) return;
+        if (!canContinue || UnityEngine.InputSystem.Keyboard.current == null)
+            return;
 
         if (UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            if (isTyping) { SkipCurrentSegment(); }
-            else { Advance(); }
+            if (isTyping)
+                SkipCurrentSegment();
+            else
+                Advance();
         }
     }
 
@@ -62,7 +64,11 @@ public class CutsceneManager : MonoBehaviour
 
     IEnumerator ShowSegment()
     {
-        if (currentSegment >= segments.Length) { Finish(); yield break; }
+        if (currentSegment >= segments.Length)
+        {
+            Finish();
+            yield break;
+        }
 
         if (continuePrompt) continuePrompt.SetActive(false);
 
@@ -78,7 +84,13 @@ public class CutsceneManager : MonoBehaviour
     {
         isTyping = true;
         storyText.text = "";
-        foreach (char c in txt) { storyText.text += c; yield return new WaitForSeconds(typeSpeed); }
+
+        foreach (char c in txt)
+        {
+            storyText.text += c;
+            yield return new WaitForSeconds(typeSpeed);
+        }
+
         isTyping = false;
     }
 
@@ -99,7 +111,9 @@ public class CutsceneManager : MonoBehaviour
 
     void Finish()
     {
-        if (stopMusicOnFinish) AudioManager.Instance.StopMusic();
-        SceneManager.LoadScene(nextSceneName);
+        if (stopMusicOnFinish && AudioManager.Instance)
+            AudioManager.Instance.StopMusic();
+
+        SceneManager.LoadScene(nextSceneIndex);
     }
 }

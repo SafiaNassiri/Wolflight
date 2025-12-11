@@ -43,7 +43,7 @@ public class MainMenuManager : MonoBehaviour
     public void PlayGame()
     {
         PlayButtonSound();
-        SceneManager.LoadScene("OpeningCutscene");
+        SceneManager.LoadScene(SceneIndex.OPENING);
     }
 
     public void OpenSettings()
