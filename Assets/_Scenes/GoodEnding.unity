@@ -624,7 +624,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndingCutsceneManager
   storyText: {fileID: 344152785}
   continuePrompt: {fileID: 31814430}
-  segments: []
+  segments:
+  - As you approach the shrine, the runes glow with warm light. The stone statue
+    seems to breathe.
+  - "The fragments of her soul swirl around you, memories cascading through your
+    mind. You see her final moment\u2014standing defiant against the encroaching
+    darkness."
+  - She didn't hesitate. Didn't flinch. She gave everything so that life could continue.
+    So that you could stand here today.
+  - The light of the fourteen runes merge, drawn to the statue like moths to flame.
+    Cracks of golden light spread across the stone.
+  - "The stone crumbles. She opens her eyes\u2014no longer carved marble, but living,
+    breathing warmth. She smiles, a single tear rolling down her cheek.\""
+  - '''You remembered,'' she whispers. ''After all this time... someone remembered.'''
+  - The darkness that once threatened this realm has long passed. But she remained,
+    trapped between stone and spirit, waiting for one soul brave enough to piece
+    her back together.
+  - '''Thank you,'' she says, her form beginning to shimmer with ethereal light.
+    ''I can finally rest. The realm is safe. You made sure of that.'''
+  - As she fades into light, the world around you blooms. Flowers sprout where stone
+    once lay. The air fills with warmth. Life returns in full.
+  - She's gone, but not forgotten. Never forgotten. Her legacy lives on in you, in
+    this restored realm, in every life she saved. You were the keeper of her memory.
+    And that made all the difference.
   typeSpeed: 0.03
   segmentDelay: 1
   musicForThisCutscene: {fileID: 8300000, guid: c126ec652b84e3d4ca0a2bf6c51f3b86, type: 3}

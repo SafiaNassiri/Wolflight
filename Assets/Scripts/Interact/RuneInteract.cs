@@ -22,9 +22,9 @@ public class Rune : MonoBehaviour, IInteractable
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlayRuneSFX();
 
-        // Show dialogue
+        // Show dialogue in bold
         if (DialogueManager.Instance != null)
-            DialogueManager.Instance.ShowDialogue(loreText);
+            DialogueManager.Instance.ShowDialogue($"<b>{loreText}</b>");
 
         // Hide glow
         if (glowPulse != null)
@@ -36,4 +36,5 @@ public class Rune : MonoBehaviour, IInteractable
         Debug.Log($"Rune collected! Total: {runesCollected}/{totalRunesNeeded}");
         Destroy(gameObject, 0.5f);
     }
+
 }

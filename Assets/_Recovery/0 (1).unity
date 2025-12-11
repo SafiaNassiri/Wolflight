@@ -88432,7 +88432,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: No coin, no quest, no Geralt.
+  m_text: Toss a coin to your witcher
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 961cdc82af8710847a2743307fdcc670, type: 2}
   m_sharedMaterial: {fileID: -3869497042525293114, guid: 961cdc82af8710847a2743307fdcc670, type: 2}
@@ -89985,7 +89985,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "just a pile of hay. \nno rooftop leaps today."
+  m_text: AC reff
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e277bb05d5bf374a867b04f0416cabc, type: 2}
   m_sharedMaterial: {fileID: -3033752419191692043, guid: 7e277bb05d5bf374a867b04f0416cabc, type: 2}
@@ -90012,8 +90012,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2.8
-  m_fontSizeBase: 2.8
+  m_fontSize: 3
+  m_fontSizeBase: 3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -90050,7 +90050,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 9.067835, y: 1.9519196, z: 9.066666, w: 2.000677}
+  m_margin: {x: 9.085329, y: 1.9519196, z: 9.078327, w: 2.000677}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -90749,7 +90749,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: hmm... tempting. but you're not an assassin, so the hay stays undisturbed.
+  m_text: AC reff
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e277bb05d5bf374a867b04f0416cabc, type: 2}
   m_sharedMaterial: {fileID: -3033752419191692043, guid: 7e277bb05d5bf374a867b04f0416cabc, type: 2}
@@ -90776,8 +90776,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2.5
-  m_fontSizeBase: 2.5
+  m_fontSize: 3
+  m_fontSizeBase: 3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

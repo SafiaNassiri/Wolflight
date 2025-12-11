@@ -397,7 +397,7 @@ Transform:
   m_GameObject: {fileID: 849179430}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 71.2, y: 5, z: 5}
+  m_LocalPosition: {x: 71.2, y: -16.9, z: 5}
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -658,9 +658,9 @@ MonoBehaviour:
     depths.
   typeSpeed: 0.03
   segmentDelay: 1
-  musicForThisCutscene: {fileID: 8300000, guid: c126ec652b84e3d4ca0a2bf6c51f3b86, type: 3}
-  stopMusicOnFinish: 1
-  nextSceneName: MainLevel
+  musicForThisCutscene: {fileID: 8300000, guid: 386e38c895c40f743b36f0a332abefd4, type: 3}
+  stopMusicOnFinish: 0
+  nextSceneIndex: 2
 --- !u!4 &1228433052
 Transform:
   m_ObjectHideFlags: 0

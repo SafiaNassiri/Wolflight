@@ -28,6 +28,9 @@ public class DeathPit : MonoBehaviour
             // Hide player
             other.gameObject.SetActive(false);
 
+            // Reset rune counter
+            Rune.runesCollected = 0;
+
             // Reload after delay
             Invoke(nameof(LoadNextScene), deathDelay);
         }
