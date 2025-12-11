@@ -193,6 +193,7 @@ Assets/
 - [ ] Mapping system in PauseMenu or mapped to a button
 - [ ] Cover the sprite gaps
 - [ ] Death screen tracks rune scorrectly
+- [ ] Add S to be player looks down
 
 ---
 
