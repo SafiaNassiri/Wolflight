@@ -1,48 +1,35 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+// Handles all player movement, jumping, wall interactions, animations, audio, and interactions.
+// Supports coyote time, jump buffering, wall jumps, wall slides, and advanced gravity.
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("MOVEMENT")]
-    public float moveSpeed = 8f;
-    public float groundAccelerationTime = 0.05f;
-    public float airAccelerationTime = 0.12f;
-
-    [Header("JUMPING")]
+    public float moveSpeed = 8f;                  // Horizontal speed
+    public float groundAccelerationTime = 0.05f;  // Smooth acceleration on ground
+    public float airAccelerationTime = 0.12f;     // Smooth acceleration in air
     public float jumpVelocity = 14f;
-    public int maxJumps = 1;
-    public float coyoteTime = 0.12f;
-    public float jumpBufferTime = 0.12f;
-    public float maxJumpHoldTime = 0.18f;
-
-    [Header("GRAVITY")]
+    public int maxJumps = 1;                      // Number of jumps allowed
+    public float coyoteTime = 0.12f;              // Grace period after leaving ground
+    public float jumpBufferTime = 0.12f;          // Buffer for jump input
+    public float maxJumpHoldTime = 0.18f;         // Max duration to hold jump
     public float normalGravityScale = 1f;
-    public float lowJumpMultiplier = 2.2f;
-    public float fallMultiplier = 2.2f;
-    public float fastFallMultiplier = 1.4f;
-
-    [Header("WALL JUMP & SLIDE")]
+    public float lowJumpMultiplier = 2.2f;        // Gravity when jump released early
+    public float fallMultiplier = 2.2f;           // Gravity multiplier for falling
+    public float fastFallMultiplier = 1.4f;       // Extra gravity when pressing down
     public LayerMask wallLayer;
     public Transform wallCheck;
     public float wallCheckDistance = 0.1f;
     public float wallSlideSpeedMax = 2.5f;
     public float wallStickDuration = 0.18f;
     public Vector2 wallJumpVelocity = new Vector2(10f, 14f);
-
-    [Header("GROUND CHECK")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
-
-    [Header("INTERACTION")]
     public float interactRange = 1f;
     public LayerMask interactableLayer;
-
-    [Header("ANIMATOR")]
     public Animator animator;
-
-    [Header("PLAYER AUDIO")]
     public AudioClip runningLoopSound;
 
     private Rigidbody2D rb;
@@ -68,13 +55,13 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = normalGravityScale;
     }
-
+    
     void Start()
     {
         jumpsLeft = maxJumps;
         wallStickTimer = wallStickDuration;
 
-        // Create looping audio sources
+        // Create looping audio sources for footstep and wall slide
         footstepLoopSource = CreateAudioSource("FootstepLoop", runningLoopSound, true);
         wallSlideSource = CreateAudioSource("WallSlideSource", null, true);
     }
@@ -89,7 +76,6 @@ public class PlayerController : MonoBehaviour
         src.playOnAwake = false;
         return src;
     }
-
     void Update()
     {
         HandleInput();
@@ -125,18 +111,15 @@ public class PlayerController : MonoBehaviour
         ApplyGravityModifiers();
     }
 
-    // ---- AUDIO ----
     void HandleFootsteps()
     {
         if (IsGrounded() && Mathf.Abs(horizontalInput) > 0.1f)
         {
-            if (!footstepLoopSource.isPlaying)
-                footstepLoopSource.Play();
+            if (!footstepLoopSource.isPlaying) footstepLoopSource.Play();
         }
         else
         {
-            if (footstepLoopSource.isPlaying)
-                footstepLoopSource.Stop();
+            if (footstepLoopSource.isPlaying) footstepLoopSource.Stop();
         }
     }
 
@@ -169,7 +152,7 @@ public class PlayerController : MonoBehaviour
 
     void PerformJump(bool isWallJumpAttempt = false)
     {
-        // Play jump sound via AudioManager
+        // Play jump sound
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlayJumpSound();
 
@@ -196,7 +179,6 @@ public class PlayerController : MonoBehaviour
             AudioManager.Instance.PlayDeathSound();
     }
 
-    // ---- INTERACTIONS ----
     void CheckForInteractable()
     {
         Collider2D hit = Physics2D.OverlapCircle(transform.position, interactRange, interactableLayer);
@@ -209,7 +191,6 @@ public class PlayerController : MonoBehaviour
             currentInteractable?.Interact();
     }
 
-    // ---- HELPERS ----
     bool IsGrounded() => groundCheck != null && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
     void FlipIfNeeded()
@@ -226,9 +207,6 @@ public class PlayerController : MonoBehaviour
         transform.localScale = s;
     }
 
-    // ------------------------
-    // INPUT
-    // ------------------------
     void HandleInput()
     {
         horizontalInput = 0f;
@@ -245,9 +223,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ------------------------
-    // GROUND & WALL DETECTION
-    // ------------------------
     void DetectGroundAndWall()
     {
         bool grounded = IsGrounded();
@@ -269,9 +244,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ------------------------
-    // WALL SLIDE
-    // ------------------------
     void HandleWallSlide()
     {
         isWallSliding = false;
@@ -290,9 +262,6 @@ public class PlayerController : MonoBehaviour
         else wallStickTimer = wallStickDuration;
     }
 
-    // ------------------------
-    // JUMP BUFFER + COYOTE
-    // ------------------------
     void HandleJumpBuffer()
     {
         bool coyoteActive = (Time.time - lastGroundedTime) <= coyoteTime;
@@ -308,9 +277,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ------------------------
-    // ANIMATION
-    // ------------------------
     void UpdateAnimator(float horizontalVelocity)
     {
         bool grounded = IsGrounded();
@@ -322,9 +288,6 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(horizontalVelocity));
     }
 
-    // ------------------------
-    // MOVEMENT
-    // ------------------------
     void HandleMovement()
     {
         float targetVelX = horizontalInput * moveSpeed;
@@ -336,9 +299,6 @@ public class PlayerController : MonoBehaviour
         currentSpeed = Mathf.Abs(newVX);
     }
 
-    // ------------------------
-    // GRAVITY MODIFIERS
-    // ------------------------
     void ApplyGravityModifiers()
     {
         bool holdingJump = Keyboard.current != null && Keyboard.current.spaceKey.isPressed;

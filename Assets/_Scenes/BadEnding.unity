@@ -1219,7 +1219,7 @@ MonoBehaviour:
     The weight of incompletion will haunt you forever.
   typeSpeed: 0.03
   segmentDelay: 1
-  musicForThisCutscene: {fileID: 8300000, guid: c126ec652b84e3d4ca0a2bf6c51f3b86, type: 3}
+  musicForThisCutscene: {fileID: 8300000, guid: 056d3c133e50453498099cfd0c1ac56b, type: 3}
   stopMusicOnFinish: 1
   nextSceneIndex: 0
 --- !u!4 &1885196200

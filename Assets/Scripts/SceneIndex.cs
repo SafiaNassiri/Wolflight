@@ -1,3 +1,5 @@
+// A static class holding scene build index references.
+
 public static class SceneIndex
 {
     public const int MAIN_MENU = 0;

@@ -38,14 +38,7 @@ public class DeathPit : MonoBehaviour
 
     void LoadNextScene()
     {
-        if (string.IsNullOrEmpty(gameOverSceneName))
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
-        }
-        else
-        {
-            SceneManager.LoadScene(gameOverSceneName);
-        }
+        // Load Game Over scene
+        SceneManager.LoadScene(SceneIndex.GAME_OVER);
     }
 }

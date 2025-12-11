@@ -1,17 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Central audio manager handling music, ambience, SFX, and special sources like elf singing.
+// Provides volume control, persistence via PlayerPrefs, and scene-specific music handling.
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
-
-    [Header("Audio Sources")]
-    public AudioSource musicSource;
-    public AudioSource ambienceSource;
-    public AudioSource sfxSource;
-    public AudioSource elfSource;
-
-    [Header("Music Clips")]
+    public AudioSource musicSource;      // Main background music
+    public AudioSource ambienceSource;   // Environmental loops
+    public AudioSource sfxSource;        // Player and event sound effects
+    public AudioSource elfSource;        // Special source for elf singing
     public AudioClip menuMusic;
     public AudioClip mainLevelMusic;
     public AudioClip gameOverMusic;
@@ -19,28 +17,18 @@ public class AudioManager : MonoBehaviour
     public AudioClip badEndingMusic;
     public AudioClip elfClip;
     public AudioClip openingCutsceneMusic;
-
-    [Header("Player SFX")]
     public AudioClip jumpSound;
     public AudioClip landSound;
     public AudioClip wallSlideSound;
     public AudioClip deathSound;
     public AudioClip runningLoopSound;
-
-    [Header("Environment SFX")]
     public AudioClip runeSound;
     public AudioClip shrineSound;
-
-    [Header("Volume Controls")]
     [Range(0f, 1f)] public float masterVolume = 1f;
     [Range(0f, 1f)] public float musicVolume = 0.7f;
     [Range(0f, 1f)] public float sfxVolume = 1f;
     [Range(0f, 1f)] public float elfVolume = 0.3f;
-    // ----------  NEW  ----------
-    [Range(0f, 1f)] public float cutsceneMusicVolume = 0.5f; // inspector tweak
-    // ----------  END NEW  ----------
-
-    [Header("Individual SFX Volumes")]
+    [Range(0f, 1f)] public float cutsceneMusicVolume = 0.5f;
     [Range(0f, 1f)] public float jumpVolume = 0.9f;
     [Range(0f, 1f)] public float landVolume = 0.7f;
     [Range(0f, 1f)] public float wallSlideVolume = 0.5f;
@@ -49,225 +37,88 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] public float runeVolume = 0.8f;
     [Range(0f, 1f)] public float shrineVolume = 0.8f;
 
-    /* ---------------------------------------------------------- */
-    /*  LIFECYCLE                                                 */
-    /* ---------------------------------------------------------- */
-
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // Persist across scenes
             InitializeAudioSources();
             LoadVolumes();
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        else { Destroy(gameObject); }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
+    // Creates AudioSource components if not assigned and sets defaults.
     void InitializeAudioSources()
     {
-        if (musicSource == null)
-        {
-            var g = new GameObject("MusicSource");
-            g.transform.parent = transform;
-            musicSource = g.AddComponent<AudioSource>();
-        }
-        if (ambienceSource == null)
-        {
-            var g = new GameObject("AmbienceSource");
-            g.transform.parent = transform;
-            ambienceSource = g.AddComponent<AudioSource>();
-        }
-        if (sfxSource == null)
-        {
-            var g = new GameObject("SFXSource");
-            g.transform.parent = transform;
-            sfxSource = g.AddComponent<AudioSource>();
-        }
-        if (elfSource == null)
-        {
-            var g = new GameObject("ElfSource");
-            g.transform.parent = transform;
-            elfSource = g.AddComponent<AudioSource>();
-        }
+        if (musicSource == null) musicSource = CreateSource("MusicSource", loop: true);
+        if (ambienceSource == null) ambienceSource = CreateSource("AmbienceSource", loop: true);
+        if (sfxSource == null) sfxSource = CreateSource("SFXSource", loop: false);
+        if (elfSource == null) elfSource = CreateSource("ElfSource", loop: true);
 
-        musicSource.loop = true;
-        musicSource.playOnAwake = false;
-        ambienceSource.loop = true;
-        ambienceSource.playOnAwake = false;
-        sfxSource.playOnAwake = false;
-        elfSource.loop = true;
-        elfSource.playOnAwake = false;
-
-        // ----------  NEW  ----------
-        ApplyVolumes(); // first-frame volume
-        // ----------  END NEW  ----------
+        ApplyVolumes(); // Apply saved volume settings on start
     }
 
-    /* ---------------------------------------------------------- */
-    /*  SCENE-CHANGE HANDLER   (volume lines removed)             */
-    /* ---------------------------------------------------------- */
+    AudioSource CreateSource(string name, bool loop)
+    {
+        GameObject g = new GameObject(name);
+        g.transform.parent = transform;
+        AudioSource src = g.AddComponent<AudioSource>();
+        src.loop = loop;
+        src.playOnAwake = false;
+        return src;
+    }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log($"Scene loaded: {scene.name}");
 
-        /*  MAIN MENU  */
+        // Stop elf source by default
+        elfSource.Stop();
+
+        // Play music depending on scene
         if (scene.name == "MainMenu")
         {
-            if (menuMusic != null)
-            {
-                musicSource.Stop();
-                musicSource.clip = menuMusic;
-                // musicSource.volume = masterVolume * musicVolume;  // REMOVED
-                musicSource.Play();
-                Debug.Log("Playing menu music");
-            }
-            if (elfClip != null)
-            {
-                elfSource.Stop();
-                elfSource.clip = elfClip;
-                // elfSource.volume = masterVolume * musicVolume * elfVolume;  // REMOVED
-                elfSource.Play();
-                Debug.Log("Playing elf singing");
-            }
+            PlayMusic(menuMusic);
+            elfSource.clip = elfClip;
+            elfSource.Play();
         }
-
-        /*  MAIN LEVEL  */
         else if (scene.name == "MainLevel")
-        {
-            musicSource.Stop();
-            elfSource.Stop();
-            if (mainLevelMusic != null)
-            {
-                musicSource.clip = mainLevelMusic;
-                // musicSource.volume = masterVolume * musicVolume;  // REMOVED
-                musicSource.Play();
-                Debug.Log("Playing main level music");
-            }
-        }
-
-        /*  GAME OVER  */
+            PlayMusic(mainLevelMusic);
         else if (scene.name == "GameOver")
-        {
-            musicSource.Stop();
-            elfSource.Stop();
-            if (gameOverMusic != null)
-            {
-                musicSource.clip = gameOverMusic;
-                // musicSource.volume = masterVolume * musicVolume;  // REMOVED
-                musicSource.Play();
-                Debug.Log("Playing game over music");
-            }
-        }
-
-        /*  GOOD ENDING  */
+            PlayMusic(gameOverMusic);
         else if (scene.name == "GoodEnding")
-        {
-            musicSource.Stop();
-            elfSource.Stop();
-            if (goodEndingMusic != null)
-            {
-                musicSource.clip = goodEndingMusic;
-                // musicSource.volume = masterVolume * musicVolume;  // REMOVED
-                musicSource.Play();
-            }
-        }
-
-        /*  BAD ENDING  */
+            PlayMusic(goodEndingMusic);
         else if (scene.name == "BadEnding")
-        {
-            musicSource.Stop();
-            elfSource.Stop();
-            if (badEndingMusic != null)
-            {
-                musicSource.clip = badEndingMusic;
-                // musicSource.volume = masterVolume * musicVolume;  // REMOVED
-                musicSource.Play();
-            }
-        }
-
-        /*  OPENING CUT-SCENE  */
+            PlayMusic(badEndingMusic);
         else if (scene.name == "OpeningCutscene")
-        {
-            musicSource.Stop();
-            elfSource.Stop();
-            if (openingCutsceneMusic != null)
-            {
-                musicSource.clip = openingCutsceneMusic;
-                // musicSource.volume = masterVolume * cutsceneMusicVolume;  // REMOVED
-                musicSource.Play();
-                Debug.Log("Playing opening-cutscene music");
-            }
-        }
+            PlayMusic(openingCutsceneMusic);
 
-        // ----------  NEW  ----------
-        ApplyVolumes(); // set correct volume after clip change
-        // ----------  END NEW  ----------
+        ApplyVolumes(); // Ensure volume is correct after scene load
     }
 
-    /* ---------------------------------------------------------- */
-    /*  PUBLIC VOLUME API  (single music slider drives everything) */
-    /* ---------------------------------------------------------- */
+    public void SetMasterVolume(float value) { masterVolume = Mathf.Clamp01(value); ApplyVolumes(); SaveVolume("MasterVolume", masterVolume); }
+    public void SetMusicVolume(float value) { musicVolume = Mathf.Clamp01(value); ApplyVolumes(); SaveVolume("MusicVolume", musicVolume); }
+    public void SetSFXVolume(float value) { sfxVolume = Mathf.Clamp01(value); SaveVolume("SFXVolume", sfxVolume); }
+    public void SetCutsceneMusicVolume(float value) { cutsceneMusicVolume = Mathf.Clamp01(value); ApplyVolumes(); SaveVolume("CutsceneMusicVolume", cutsceneMusicVolume); }
 
-    public void SetMasterVolume(float value)
-    {
-        masterVolume = Mathf.Clamp01(value);
-        ApplyVolumes();
-        SaveVolume("MasterVolume", masterVolume);
-    }
-
-    public void SetMusicVolume(float value) /* <-- your UI slider calls this */
-    {
-        musicVolume = Mathf.Clamp01(value);
-        ApplyVolumes();
-        SaveVolume("MusicVolume", musicVolume);
-    }
-
-    public void SetSFXVolume(float value)
-    {
-        sfxVolume = Mathf.Clamp01(value);
-        SaveVolume("SFXVolume", sfxVolume);
-    }
-
-    // ----------  NEW  ----------
-    /* optional: let designers change the RELATIVE trim at runtime */
-    public void SetCutsceneMusicVolume(float value)
-    {
-        cutsceneMusicVolume = Mathf.Clamp01(value);
-        ApplyVolumes();
-        SaveVolume("CutsceneMusicVolume", cutsceneMusicVolume);
-    }
-    // ----------  END NEW  ----------
-
-    /* ---------------------------------------------------------- */
-    /*  APPLY VOLUMES  (single source of truth)                   */
-    /* ---------------------------------------------------------- */
-
+    /// Applies all volume multipliers to AudioSources based on saved values.
+    /// Handles cutscene music differently if desired.
     void ApplyVolumes()
     {
         if (!musicSource) return;
 
-        /* decide which multiplier to use */
-        bool isCutscene =
-            musicSource.clip == openingCutsceneMusic ||
-            musicSource.clip == goodEndingMusic ||
-            musicSource.clip == badEndingMusic;
-
-        float musicVol = isCutscene ? musicVolume * cutsceneMusicVolume
-                                    : musicVolume;
-
+        bool isCutscene = musicSource.clip == openingCutsceneMusic || musicSource.clip == goodEndingMusic || musicSource.clip == badEndingMusic;
+        float musicVol = isCutscene ? musicVolume * cutsceneMusicVolume : musicVolume;
         musicSource.volume = masterVolume * musicVol;
 
-        if (elfSource)
-            elfSource.volume = masterVolume * musicVolume * elfVolume;
+        if (elfSource) elfSource.volume = masterVolume * musicVolume * elfVolume;
     }
-
-    /* ---------------------------------------------------------- */
-    /*  MUSIC / SFX  PLAY-HELPERS                                 */
-    /* ---------------------------------------------------------- */
 
     public void PlayMusic(AudioClip clip)
     {
@@ -276,15 +127,11 @@ public class AudioManager : MonoBehaviour
 
         musicSource.Stop();
         musicSource.clip = clip;
-        // musicSource.volume = masterVolume * musicVolume;  // REMOVED
         musicSource.Play();
-        ApplyVolumes(); // <-- make sure volume is correct
+        ApplyVolumes();
     }
 
-    public void StopMusic()
-    {
-        if (musicSource) musicSource.Stop();
-    }
+    public void StopMusic() { if (musicSource) musicSource.Stop(); }
 
     public void PlaySFX(AudioClip clip, float volumeMultiplier = 1f)
     {
@@ -292,38 +139,23 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, masterVolume * sfxVolume * volumeMultiplier);
     }
 
-    // ----------  shortcuts  ----------
+    // Shortcuts for common player/environment sounds
     public void PlayJumpSound() => PlaySFX(jumpSound, jumpVolume);
     public void PlayLandSound() => PlaySFX(landSound, landVolume);
     public void PlayDeathSound() => PlaySFX(deathSound, deathVolume);
     public void PlayRuneSFX() => PlaySFX(runeSound, runeVolume);
     public void PlayShrineSFX() => PlaySFX(shrineSound, shrineVolume);
 
-    /* ---------------------------------------------------------- */
-    /*  SAVE / LOAD                                               */
-    /* ---------------------------------------------------------- */
-
-    void SaveVolume(string key, float value)
-    {
-        PlayerPrefs.SetFloat(key, value);
-        PlayerPrefs.Save();
-    }
-
+    void SaveVolume(string key, float value) { PlayerPrefs.SetFloat(key, value); PlayerPrefs.Save(); }
     void LoadVolumes()
     {
         masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
         musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.7f);
         sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
-        // ----------  NEW  ----------
         cutsceneMusicVolume = PlayerPrefs.GetFloat("CutsceneMusicVolume", 0.5f);
-        // ----------  END NEW  ----------
         ApplyVolumes();
     }
-
-    /* ---------------------------------------------------------- */
-    /*  GETTERS  (kept for UI or other scripts)                   */
-    /* ---------------------------------------------------------- */
-
+    
     public float GetMasterVolume() => masterVolume;
     public float GetMusicVolume() => musicVolume;
     public float GetSFXVolume() => sfxVolume;
@@ -331,12 +163,5 @@ public class AudioManager : MonoBehaviour
     public float GetWallSlideVolume() => wallSlideVolume;
     public float GetCutsceneMusicVolume() => cutsceneMusicVolume;
 
-    /* ---------------------------------------------------------- */
-    /*  CLEAN-UP                                                  */
-    /* ---------------------------------------------------------- */
-
-    void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    void OnDestroy() { SceneManager.sceneLoaded -= OnSceneLoaded; }
 }

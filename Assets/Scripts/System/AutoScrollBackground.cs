@@ -1,36 +1,27 @@
 using UnityEngine;
 
+// Handles automatic background scrolling for parallax effects or moving skies, fog, etc. 
 public class AutoScrollBackground : MonoBehaviour
 {
-    [Header("Scroll Settings")]
-    [Tooltip("Horizontal scroll speed (negative = left, positive = right)")]
     public float scrollSpeedX = 0.5f;
-
-    [Tooltip("Vertical scroll speed (negative = down, positive = up)")]
     public float scrollSpeedY = 0f;
-
-    [Header("Infinite Scrolling")]
-    [Tooltip("Enable seamless looping")]
     public bool infiniteScroll = true;
-
-    [Tooltip("Width of sprite (auto-detected if using SpriteRenderer)")]
     public float spriteWidth;
-
-    [Tooltip("Height of sprite (for vertical scrolling)")]
     public float spriteHeight;
 
-    private Vector3 startPos;
-    private Material material;
-    private bool useMaterialScroll = false;
+    private Vector3 startPos;                   // The original starting position of the background
+    private Material material;                  // Material reference if texture offset scrolling is enabled
+    private bool useMaterialScroll = false;     // Switch between material or position-based scrolling
 
     void Start()
     {
+        // Store the starting position so we know where to loop back to
         startPos = transform.position;
 
-        // DISABLED material scrolling - use position scrolling instead
+        // Material scrolling disabled
         useMaterialScroll = false;
 
-        // Auto-detect sprite size
+        // Auto-detect sprite size if using a SpriteRenderer
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null)
         {
@@ -41,44 +32,45 @@ public class AutoScrollBackground : MonoBehaviour
 
     void Update()
     {
-        // DEBUG
-        //Debug.Log($"Scrolling: Speed={scrollSpeedX}, Pos={transform.position.x:F2}, UseMaterial={useMaterialScroll}");
-
+        // If material scrolling is ever re-enabled, use texture offset instead of transform movement
         if (useMaterialScroll)
         {
-            // Scroll using texture offset (best for tiling textures)
             float offsetX = Time.time * scrollSpeedX * 0.1f;
             float offsetY = Time.time * scrollSpeedY * 0.1f;
             material.mainTextureOffset = new Vector2(offsetX, offsetY);
         }
         else if (infiniteScroll)
         {
-            // Scroll by moving the object and resetting position
-            float newX = transform.position.x + (scrollSpeedX * Time.deltaTime);
-            float newY = transform.position.y + (scrollSpeedY * Time.deltaTime);
+            // Move the background based on scroll speeds
+            float newX = transform.position.x + scrollSpeedX * Time.deltaTime;
+            float newY = transform.position.y + scrollSpeedY * Time.deltaTime;
 
             transform.position = new Vector3(newX, newY, transform.position.z);
 
-            // Reset position for infinite loop (horizontal)
+            // Horizontal infinite loop
             if (spriteWidth > 0)
             {
+                // Background moving right
                 if (scrollSpeedX > 0 && transform.position.x > startPos.x + spriteWidth)
                 {
                     transform.position = new Vector3(startPos.x, transform.position.y, transform.position.z);
                 }
+                // Background moving left
                 else if (scrollSpeedX < 0 && transform.position.x < startPos.x - spriteWidth)
                 {
                     transform.position = new Vector3(startPos.x, transform.position.y, transform.position.z);
                 }
             }
 
-            // Reset position for infinite loop (vertical)
+            // Vertical infinite loop
             if (spriteHeight > 0)
             {
+                // Moving up
                 if (scrollSpeedY > 0 && transform.position.y > startPos.y + spriteHeight)
                 {
                     transform.position = new Vector3(transform.position.x, startPos.y, transform.position.z);
                 }
+                // Moving down
                 else if (scrollSpeedY < 0 && transform.position.y < startPos.y - spriteHeight)
                 {
                     transform.position = new Vector3(transform.position.x, startPos.y, transform.position.z);
@@ -87,9 +79,9 @@ public class AutoScrollBackground : MonoBehaviour
         }
         else
         {
-            // Simple continuous scroll (no looping)
-            float newX = transform.position.x + (scrollSpeedX * Time.deltaTime);
-            float newY = transform.position.y + (scrollSpeedY * Time.deltaTime);
+            // Simple scroll with no looping
+            float newX = transform.position.x + scrollSpeedX * Time.deltaTime;
+            float newY = transform.position.y + scrollSpeedY * Time.deltaTime;
             transform.position = new Vector3(newX, newY, transform.position.z);
         }
     }

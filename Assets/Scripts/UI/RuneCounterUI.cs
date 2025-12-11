@@ -1,24 +1,27 @@
 using UnityEngine;
 using TMPro;
 
+/// Handles updating and animating the on-screen rune counter UI.
+/// Keeps the display synced with Rune.runesCollected and plays a small
+/// "punch" animation whenever the count changes.
 public class RuneCounterUI : MonoBehaviour
 {
+    // Instance so other scripts can easily reference the UI.
     public static RuneCounterUI Instance { get; private set; }
 
-    [Header("UI References")]
-    public TextMeshProUGUI runeCountText;
-    public GameObject runeIcon;
+    public TextMeshProUGUI runeCountText; // The "X/Y" text display
+    public GameObject runeIcon;           // Icon for runes (unused but available for future code refactoring)
 
-    [Header("Animation Settings")]
-    public bool animateOnCollect = true;
-    public float punchScale = 1.3f;
-    public float animDuration = 0.3f;
+    public bool animateOnCollect = true;  // Toggle the punch animation
+    public float punchScale = 1.3f;       // How large the text scales during the punch
+    public float animDuration = 0.3f;     // Total duration of the punch animation
 
-    private Vector3 originalScale;
-    private int lastCount = 0;
+    private Vector3 originalScale;        // Rune text's starting scale
+    private int lastCount = 0;            // Detect when count changes
 
     void Awake()
     {
+        // Only one instance allowed
         if (Instance == null)
         {
             Instance = this;
@@ -31,6 +34,7 @@ public class RuneCounterUI : MonoBehaviour
 
     void Start()
     {
+        // Record the starting scale of the text so we can animate from it
         if (runeCountText != null)
         {
             originalScale = runeCountText.transform.localScale;
@@ -41,12 +45,13 @@ public class RuneCounterUI : MonoBehaviour
 
     void Update()
     {
-        // Check if rune count changed
+        // Detect changes in the collected runes count
         if (Rune.runesCollected != lastCount)
         {
             lastCount = Rune.runesCollected;
             UpdateDisplay();
 
+            // Trigger the punch animation if enabled
             if (animateOnCollect)
             {
                 AnimatePunch();
@@ -54,6 +59,7 @@ public class RuneCounterUI : MonoBehaviour
         }
     }
 
+    /// Updates the text to show current/required runes.
     void UpdateDisplay()
     {
         if (runeCountText != null)
@@ -62,14 +68,16 @@ public class RuneCounterUI : MonoBehaviour
         }
     }
 
+    /// Starts the punch animation coroutine.
     void AnimatePunch()
     {
         if (runeCountText == null) return;
 
-        StopAllCoroutines();
+        StopAllCoroutines(); // Cancel any ongoing animation so no overlap
         StartCoroutine(PunchAnimation());
     }
 
+    /// Punch animation: scale up, then scale back down.
     System.Collections.IEnumerator PunchAnimation()
     {
         float elapsed = 0f;
@@ -85,7 +93,7 @@ public class RuneCounterUI : MonoBehaviour
 
         elapsed = 0f;
 
-        // Scale back down
+        // Scale down
         while (elapsed < animDuration / 2)
         {
             elapsed += Time.deltaTime;
@@ -94,6 +102,7 @@ public class RuneCounterUI : MonoBehaviour
             yield return null;
         }
 
+        // Make sure final scale is the iriogional scale
         runeCountText.transform.localScale = originalScale;
     }
 }
